@@ -1,20 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import { useDispatch, useSelector } from "react-redux";
-import { loginCompleted } from "./store/slices/user";
+import { useSelector } from "react-redux";
 import NavBar from "./Common/NavBar";
 import Drawer from "./Common/Drawer";
 import { Typography } from "@mui/material";
 
 export default function Dashboard({ onToggleColourMode, currentTheme }) {
   const [open, setOpen] = React.useState(true);
-  const user = useSelector((s) => s.user);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loginCompleted({ name: "foo" }));
-  }, [dispatch]);
+  const user = useSelector((s) => s.user.loggedInUser);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -42,7 +37,7 @@ export default function Dashboard({ onToggleColourMode, currentTheme }) {
       >
         <Toolbar />
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-          <Typography variant="h6">{user.name}</Typography>
+          <Typography variant="h6">{user?.firstName}</Typography>
           <Typography variant="body1">{currentTheme.palette.text.primary}</Typography>
         </Container>
       </Box>

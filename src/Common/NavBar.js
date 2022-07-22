@@ -7,16 +7,14 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import { grey } from "@mui/material/colors";
-
-const drawerWidth = 240;
+import { drawerWidth } from "./Drawer";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   background: theme.palette.mojito,
-  boxShadow: "none",
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
@@ -77,6 +75,9 @@ export default function NavBar({
             </Tooltip>
           )}
         </IconButton>
+        <Button variant="text" sx={{ color: "#000"}}>
+          Log out
+        </Button>
       </Toolbar>
     </AppBar>
   );

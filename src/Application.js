@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NotFound from "./NotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Dashboard from "./Dashboard";
 import { useCookies } from "react-cookie";
-import { DARK_THEME, getTheme, LIGHT_THEME, THEME_COOKIE_NAME } from "./theme";
+import { DARK_THEME, getTheme, LIGHT_THEME } from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import { AUTH_COOKIE_NAME, THEME_COOKIE_NAME } from "./config";
+import { useDispatch } from "react-redux";
+import { loginCompleted } from "./store/slices/user";
 
 const ColorModeContext = React.createContext({ onToggleColourMode: () => {} });
 
 function Application() {
-  const [cookies, setCookie] = useCookies(["sb_theme"]);
+  const dispatch = useDispatch()
+  const [cookies, setCookie] = useCookies([THEME_COOKIE_NAME, AUTH_COOKIE_NAME]);
   const [mode, setMode] = React.useState(
     cookies[THEME_COOKIE_NAME] || LIGHT_THEME
   );
+  const token = cookies[AUTH_COOKIE_NAME];
+
+  useEffect(() => {
+    dispatch(loginCompleted(token));
+  }, [token, dispatch]);
+
   const currentColourMode = React.useMemo(
     () => ({
       onToggleColourMode: () => {

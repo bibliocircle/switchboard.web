@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
+import jwtDecode from 'jwt-decode'
 
 const user = createSlice({
   name: 'user',
-  initialState: {},
+  initialState: {
+    loggedInUser: null
+  },
   reducers: {
-    loginCompleted(state, action) {
-      state.name = action.payload.name
-    }
+    loginCompleted(state, { payload }) {
+      state.loggedInUser = jwtDecode(payload)
+    },
   }
 })
 

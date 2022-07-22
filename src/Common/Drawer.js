@@ -15,8 +15,9 @@ import PeopleIcon from "@mui/icons-material/People";
 import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
+import { Link } from "react-router-dom";
 
-const drawerWidth = 240;
+export const drawerWidth = 240;
 
 const StyledDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -61,25 +62,25 @@ export default function Drawer({ open, toggleDrawer }) {
       </Toolbar>
       <Divider />
       <List component="nav">
-        <ListItemButton>
+        <ListItemButton component={Link} to="/">
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/mockservices">
           <ListItemIcon>
             <MiscellaneousServicesIcon />
           </ListItemIcon>
           <ListItemText primary="Mock Services" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/workspaces">
           <ListItemIcon>
             <WorkspacesIcon />
           </ListItemIcon>
           <ListItemText primary="All Workspaces" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/users">
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
@@ -89,19 +90,19 @@ export default function Drawer({ open, toggleDrawer }) {
         <ListSubheader component="div" inset>
           Your Workspaces
         </ListSubheader>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/workspace/foo1">
           <ListItemIcon>
             <TableRestaurantIcon />
           </ListItemIcon>
           <ListItemText primary="Orders API E2E" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/workspace/foo2">
           <ListItemIcon>
             <TableRestaurantIcon />
           </ListItemIcon>
           <ListItemText primary="Temp WS" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/workspace/foo3">
           <ListItemIcon>
             <TableRestaurantIcon />
           </ListItemIcon>

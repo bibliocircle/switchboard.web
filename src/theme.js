@@ -5,6 +5,7 @@ export const darkTheme = createTheme({
     mode: "dark",
     mojito: "linear-gradient(to right, #616161, #9bc5c3)",
   },
+  shadows: ["none"]
 });
 
 export const lightTheme = createTheme({
@@ -12,11 +13,11 @@ export const lightTheme = createTheme({
     mode: "light",
     mojito: "linear-gradient(to right, #1d976c, #93f9b9)",
   },
+  shadows: ["none"]
 });
 
 export const LIGHT_THEME = "light";
 export const DARK_THEME = "dark";
-export const THEME_COOKIE_NAME = "sb_theme";
 
 export const getTheme = (mode) => {
   if (mode === LIGHT_THEME) {
