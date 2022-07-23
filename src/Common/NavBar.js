@@ -8,8 +8,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Button, Tooltip } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { drawerWidth } from "./Drawer";
+import { useSelector } from "react-redux";
+import { getUserFullName } from "../utils/strings";
+import { DARK_THEME } from "../theme";
+import { Logout } from "@mui/icons-material";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -36,6 +39,7 @@ export default function NavBar({
   onToggleColourMode,
   currentTheme,
 }) {
+  const user = useSelector((s) => s.user.loggedInUser);
   return (
     <AppBar position="absolute" open={open}>
       <Toolbar
@@ -58,7 +62,11 @@ export default function NavBar({
         <Typography
           component="h1"
           variant="h6"
-          color="inherit"
+          color={(theme) =>
+            theme.palette.mode === DARK_THEME
+              ? theme.palette.getContrastText(theme.palette.background.paper)
+              : theme.palette.background.paper
+          }
           noWrap
           sx={{ flexGrow: 1 }}
         >
@@ -67,16 +75,29 @@ export default function NavBar({
         <IconButton color="inherit" onClick={onToggleColourMode}>
           {currentTheme.palette.mode === "dark" ? (
             <Tooltip title="Switch to Light Mode">
-              <LightModeIcon sx={{ color: grey[700]}}/>
+              <LightModeIcon
+                sx={{
+                  color: (theme) =>
+                    theme.palette.getContrastText(
+                      theme.palette.background.paper
+                    ),
+                }}
+              />
             </Tooltip>
           ) : (
             <Tooltip title="Switch to Dark Mode">
-              <DarkModeIcon sx={{ color: grey[700]}}/>
+              <DarkModeIcon
+                sx={{ color: (theme) => theme.palette.text.primary }}
+              />
             </Tooltip>
           )}
         </IconButton>
-        <Button variant="text" sx={{ color: "#000"}}>
-          Log out
+        <span>{}</span>
+        <Button endIcon={<Logout />} variant="text" sx={{ color: "#000" }}>
+           {getUserFullName({
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+          })} · Log out
         </Button>
       </Toolbar>
     </AppBar>

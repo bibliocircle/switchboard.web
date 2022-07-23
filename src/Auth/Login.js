@@ -12,7 +12,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Hyperlink from "../Common/Hyperlink";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
 import { Alert } from "@mui/material";
 import { loginCompleted } from "../store/slices/user";
 import { useDispatch } from "react-redux";
