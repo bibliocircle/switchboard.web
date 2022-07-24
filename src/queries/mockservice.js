@@ -65,6 +65,11 @@ export const GET_MOCK_SERVICE_BY_ID = gql`
             type
           }
           proxyScenarioConfig {
+            name
+            injectHeaders {
+                name
+                value
+            }
             upstream {
               id
               name

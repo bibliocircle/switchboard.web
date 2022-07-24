@@ -1,5 +1,6 @@
 import { Card, CardContent, Chip, Grid, Typography } from "@mui/material";
 import React from "react";
+import { MOCK_SERVICE_TYPE_MAP } from "../config";
 import { getUserFullName } from "../utils/strings";
 
 export default function MockServiceCard({ mockService }) {
@@ -16,7 +17,7 @@ export default function MockServiceCard({ mockService }) {
                 <Chip
                   label={
                     <Typography variant="subtitle2">
-                      {mockService.type}
+                      {MOCK_SERVICE_TYPE_MAP[mockService.type]}
                     </Typography>
                   }
                 />

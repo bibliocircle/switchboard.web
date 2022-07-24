@@ -6,6 +6,7 @@ import NavBar from "./Common/NavBar";
 import Drawer from "./Common/Drawer";
 import { Outlet } from "react-router-dom";
 import { Grid } from "@mui/material";
+import { LIGHT_THEME } from "./theme";
 
 export default function Home({ onToggleColourMode, currentTheme }) {
   const [open, setOpen] = React.useState(true);
@@ -26,8 +27,8 @@ export default function Home({ onToggleColourMode, currentTheme }) {
         component="main"
         sx={{
           backgroundColor:
-            currentTheme.palette.mode === "light"
-              ? currentTheme.palette.grey[100]
+            currentTheme.palette.mode === LIGHT_THEME
+              ? currentTheme.palette.grey[200]
               : currentTheme.palette.grey[800],
           flexGrow: 1,
           height: "100vh",

@@ -92,7 +92,6 @@ export default function NavBar({
             </Tooltip>
           )}
         </IconButton>
-        <span>{}</span>
         <Button endIcon={<Logout />} variant="text" sx={{ color: "#000" }}>
            {getUserFullName({
             firstName: user?.firstName,

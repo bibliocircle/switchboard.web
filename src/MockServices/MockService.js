@@ -1,20 +1,25 @@
 import { useQuery } from "@apollo/client";
-import { Add as AddIcon } from "@mui/icons-material";
 import {
+  Add as AddIcon,
+  ExpandMore as ExpandMoreIcon,
+} from "@mui/icons-material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
+  Chip,
   Grid,
-  Paper,
+  InputAdornment,
   styled,
-  Table,
-  TableCell,
-  TableContainer,
-  TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { MOCK_SERVICE_TYPE_MAP } from "../config";
 import { GET_MOCK_SERVICE_BY_ID } from "../queries/mockservice";
 import { DARK_THEME } from "../theme";
 import { getUserFullName } from "../utils/strings";
@@ -30,8 +35,15 @@ const Section = styled(Grid)(({ theme }) => {
     color: theme.palette.getContrastText(backgroundColor),
     padding: theme.spacing(3),
     height: "100%",
+    borderRadius: theme.shape.borderRadius,
   };
 });
+
+const MockServiceType = styled(Chip)(({ theme }) => ({
+  fontWeight: "bold",
+  padding: theme.spacing(3),
+  borderRadius: theme.shape.borderRadius,
+}));
 
 function UpstreamCard({ upstream }) {
   return (
@@ -42,9 +54,10 @@ function UpstreamCard({ upstream }) {
         sx={{
           p: 1,
           textAlign: "center",
-          backgroundColor: (theme) => theme.palette.mode === DARK_THEME
-          ? theme.palette.grey[800]
-          : theme.palette.grey[200],
+          backgroundColor: (theme) =>
+            theme.palette.mode === DARK_THEME
+              ? theme.palette.grey[800]
+              : theme.palette.grey[200],
         }}
       >
         <Typography variant="subtitle2">{upstream.name}</Typography>
@@ -55,9 +68,10 @@ function UpstreamCard({ upstream }) {
         sx={{
           p: 1,
           textAlign: "center",
-          backgroundColor: (theme) => theme.palette.mode === DARK_THEME
-          ? theme.palette.grey[700]
-          : theme.palette.grey[100],
+          backgroundColor: (theme) =>
+            theme.palette.mode === DARK_THEME
+              ? theme.palette.grey[700]
+              : theme.palette.grey[100],
         }}
       >
         <Typography variant="caption">{upstream.url}</Typography>
@@ -91,11 +105,14 @@ export default function MockService() {
       <Grid item xs={12}>
         <Section container alignContent="flex-start">
           <Grid item xs={12}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>
                 <Typography variant="h4" fontWeight="bold">
                   {ms.name}
                 </Typography>
+              </Grid>
+              <Grid item>
+                <MockServiceType label={MOCK_SERVICE_TYPE_MAP[ms.type]} />
               </Grid>
             </Grid>
           </Grid>
@@ -103,12 +120,12 @@ export default function MockService() {
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={4}>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   {ms.endpoints.map((ep) => (
-                    <Grid item xs={12} lg={6} key={ep.id}>
+                    <Grid item xs={12} lg={12} key={ep.id}>
                       <EndpointCard endpoint={ep} />
                     </Grid>
                   ))}
@@ -116,7 +133,7 @@ export default function MockService() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Section container>
@@ -149,40 +166,57 @@ export default function MockService() {
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <TableContainer component={Paper}>
-                          <Table >
-                            <TableRow>
-                              <TableCell >Inject Response Headers</TableCell>
-                              <TableCell>
-                                {ms.config.injectHeaders.map(({ name, value}) => (
-                                    <code key={name}>{`${name}:"${value}"`}</code>
-                                ))}
-                              </TableCell>
-                            </TableRow>
-                          </Table>
-                        </TableContainer>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Section>
-              </Grid>
-              <Grid item xs={12}>
-                <Section container alignContent="flex-start">
-                  <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <Typography textAlign="center" variant="h6">
-                          Upstreams
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                          {ms.upstreams.map((us) => (
-                            <Grid key={us.id} item xs={12}>
-                              <UpstreamCard upstream={us} />
+                        <Accordion disableGutters>
+                          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography variant="subtitle2">
+                              Inject Response Headers
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            {ms.config.injectHeaders.map(({ name, value }) => (
+                              <Typography
+                                variant="caption"
+                                key={name}
+                              >{`${name}: "${value}"`}</Typography>
+                            ))}
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion disableGutters>
+                          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography variant="subtitle2">
+                              Global Response Delay
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <TextField
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    ms
+                                  </InputAdornment>
+                                ),
+                              }}
+                              size="small"
+                              value={0}
+                            />
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion disableGutters>
+                          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography variant="subtitle2">
+                              Upstreams
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Grid container spacing={2}>
+                              {ms.upstreams.map((us) => (
+                                <Grid key={us.id} item xs={12}>
+                                  <UpstreamCard upstream={us} />
+                                </Grid>
+                              ))}
                             </Grid>
-                          ))}
-                        </Grid>
+                          </AccordionDetails>
+                        </Accordion>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -207,7 +241,7 @@ export default function MockService() {
                           </Grid>
                           <Grid item xs={12}>
                             <Typography variant="caption">
-                              Created at{" "}
+                              Created on{" "}
                               {dayjs(ms.createdAt).format(
                                 "YYYY-mm-DD [at] hh:mm:ss a"
                               )}
@@ -215,7 +249,7 @@ export default function MockService() {
                           </Grid>
                           <Grid item xs={12}>
                             <Typography variant="caption">
-                              Last updated at{" "}
+                              Last updated on{" "}
                               {dayjs(ms.updatedAt).format(
                                 "YYYY-mm-DD [at] hh:mm:ss a"
                               )}

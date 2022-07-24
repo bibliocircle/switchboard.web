@@ -8,7 +8,9 @@ const user = createSlice({
   },
   reducers: {
     loginCompleted(state, { payload }) {
-      state.loggedInUser = jwtDecode(payload)
+      try {
+        state.loggedInUser = jwtDecode(payload)
+      } catch {}
     },
   }
 })
