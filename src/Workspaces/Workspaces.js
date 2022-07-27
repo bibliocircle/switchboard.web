@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
 import { GET_WORKSPACES } from "../queries/workspaces";
+import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import WorkspaceCard from "./WorkspaceCard";
 import WorkspaceCardSkeleton from "./WorkspaceCardSkeleton";
 
@@ -13,7 +14,7 @@ const WSCard = styled(Grid)({
 });
 
 export default function Workspaces() {
-  const user = useSelector((s) => s.user.loggedInUser);
+  const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {},
     skip: !user,

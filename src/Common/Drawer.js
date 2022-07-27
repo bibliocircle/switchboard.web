@@ -12,10 +12,14 @@ import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import PeopleIcon from "@mui/icons-material/People";
-import TableRestaurantIcon from "@mui/icons-material/TableRestaurant";
+import HandymanIcon from '@mui/icons-material/Handyman';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useQuery } from "@apollo/client";
+import { GET_USER_WORKSPACES } from "../queries/workspaces";
+import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 
 export const drawerWidth = 240;
 
@@ -46,6 +50,11 @@ const StyledDrawer = styled(MuiDrawer, {
 }));
 
 export default function Drawer({ open, toggleDrawer }) {
+  const user = useSelector(LOGGED_IN_USER_SELECTOR);
+  const { loading, error, data } = useQuery(GET_USER_WORKSPACES, {
+    skip: !user,
+  });
+
   return (
     <StyledDrawer variant="permanent" open={open}>
       <Toolbar
@@ -87,27 +96,21 @@ export default function Drawer({ open, toggleDrawer }) {
           <ListItemText primary="Users" />
         </ListItemButton>
         <Divider sx={{ my: 1 }} />
-        <ListSubheader component="div" inset>
-          Your Workspaces
-        </ListSubheader>
-        <ListItemButton component={Link} to="/workspace/foo1">
-          <ListItemIcon>
-            <TableRestaurantIcon />
-          </ListItemIcon>
-          <ListItemText primary="Orders API E2E" />
-        </ListItemButton>
-        <ListItemButton component={Link} to="/workspace/foo2">
-          <ListItemIcon>
-            <TableRestaurantIcon />
-          </ListItemIcon>
-          <ListItemText primary="Temp WS" />
-        </ListItemButton>
-        <ListItemButton component={Link} to="/workspace/foo3">
-          <ListItemIcon>
-            <TableRestaurantIcon />
-          </ListItemIcon>
-          <ListItemText primary="Test Ws" />
-        </ListItemButton>
+        {user && (
+          <React.Fragment>
+            <ListSubheader component="div" inset>
+              Your Workspaces
+            </ListSubheader>
+            {data?.userWorkspaces?.map((ws) => (
+              <ListItemButton component={Link} to={`/workspace/${ws.id}`}>
+                <ListItemIcon>
+                  <HandymanIcon />
+                </ListItemIcon>
+                <ListItemText primary={ws.name} />
+              </ListItemButton>
+            ))}
+          </React.Fragment>
+        )}
       </List>
     </StyledDrawer>
   );

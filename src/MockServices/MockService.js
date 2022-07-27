@@ -21,23 +21,11 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { MOCK_SERVICE_TYPE_MAP } from "../config";
 import { GET_MOCK_SERVICE_BY_ID } from "../queries/mockservice";
+import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import { DARK_THEME } from "../theme";
 import { getUserFullName } from "../utils/strings";
 import EndpointCard from "./EndpointCard";
-
-const Section = styled(Grid)(({ theme }) => {
-  const backgroundColor =
-    theme.palette.mode === DARK_THEME
-      ? theme.palette.grey[900]
-      : theme.palette.background.paper;
-  return {
-    backgroundColor,
-    color: theme.palette.getContrastText(backgroundColor),
-    padding: theme.spacing(3),
-    height: "100%",
-    borderRadius: theme.shape.borderRadius,
-  };
-});
+import Section from '../Common/Section'
 
 const MockServiceType = styled(Chip)(({ theme }) => ({
   fontWeight: "bold",
@@ -81,7 +69,7 @@ function UpstreamCard({ upstream }) {
 }
 
 export default function MockService() {
-  const user = useSelector((s) => s.user.loggedInUser);
+  const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { mockServiceId } = useParams();
   const { loading, error, data } = useQuery(GET_MOCK_SERVICE_BY_ID, {
     variables: {

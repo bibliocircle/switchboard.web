@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
 import { GET_MOCK_SERVICES } from "../queries/mockservice";
+import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import MockServiceCard from "./MockServiceCard";
 import MockServiceCardSkeleton from "./MockServiceCardSkeleton";
 
@@ -13,7 +14,7 @@ const ServiceCard = styled(Grid)({
 });
 
 export default function MockServices() {
-  const user = useSelector((s) => s.user.loggedInUser);
+  const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { loading, error, data } = useQuery(GET_MOCK_SERVICES, {
     variables: {},
     skip: !user,

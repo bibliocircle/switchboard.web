@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { getUserFullName } from "../utils/strings";
 import { DARK_THEME } from "../theme";
 import { Logout } from "@mui/icons-material";
+import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -39,7 +40,7 @@ export default function NavBar({
   onToggleColourMode,
   currentTheme,
 }) {
-  const user = useSelector((s) => s.user.loggedInUser);
+  const user = useSelector(LOGGED_IN_USER_SELECTOR);
   return (
     <AppBar position="absolute" open={open}>
       <Toolbar

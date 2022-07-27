@@ -15,5 +15,6 @@ const user = createSlice({
   }
 })
 
+export const LOGGED_IN_USER_SELECTOR = state => state.user.loggedInUser
 export const { loginCompleted } = user.actions
 export default user.reducer

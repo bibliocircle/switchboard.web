@@ -8,7 +8,6 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Hyperlink from "../Common/Hyperlink";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
@@ -16,10 +15,8 @@ import { Alert } from "@mui/material";
 import { loginCompleted } from "../store/slices/user";
 import { useDispatch } from "react-redux";
 
-const theme = createTheme();
-
 export default function Login() {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [loginError, setLoginError] = useState();
 
   const navigate = useNavigate();
@@ -29,7 +26,7 @@ export default function Login() {
     const email = data.get("email");
     const password = data.get("password");
     if (!email || !password) {
-        return setLoginError("Both Email and Password are required")
+      return setLoginError("Both Email and Password are required");
     }
     try {
       const res = await fetch(`${BACKEND_URL}/auth/login`, {
@@ -46,8 +43,8 @@ export default function Login() {
         return setLoginError("Invalid Email or Password!");
       }
       if (res.status === 200) {
-        const data = await res.json()
-        dispatch(loginCompleted(data.token))
+        const data = await res.json();
+        dispatch(loginCompleted(data.token));
 
         return navigate("/");
       }
@@ -58,78 +55,70 @@ export default function Login() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Log in to Switchboard
-          </Typography>
-          {loginError && (
-            <Box sx={{ mt: 2 }}>
-              <Alert severity="error">{loginError}</Alert>
-            </Box>
-          )}
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Hyperlink to="/login" variant="body2">
-                  Forgot password?
-                </Hyperlink>
-              </Grid>
-              <Grid item>
-                <Hyperlink to="/signup" variant="body2">
-                  Don't have an account? Sign Up
-                </Hyperlink>
-              </Grid>
-            </Grid>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1 }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Log in to Switchboard
+        </Typography>
+        {loginError && (
+          <Box sx={{ mt: 2 }}>
+            <Alert severity="error">{loginError}</Alert>
           </Box>
+        )}
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Hyperlink to="/login" variant="body2">
+                Forgot password?
+              </Hyperlink>
+            </Grid>
+            <Grid item>
+              <Hyperlink to="/signup" variant="body2">
+                Don't have an account? Sign Up
+              </Hyperlink>
+            </Grid>
+          </Grid>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 }
