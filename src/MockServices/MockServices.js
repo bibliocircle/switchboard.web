@@ -9,7 +9,7 @@ import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import MockServiceCard from "./MockServiceCard";
 import MockServiceCardSkeleton from "./MockServiceCardSkeleton";
 
-const ServiceCard = styled(Grid)({
+export const ServiceCard = styled(Grid)({
   textDecoration: "none",
 });
 
@@ -41,10 +41,10 @@ export default function MockServices() {
   }
   return (
     <Grid container spacing={3}>
-      <PageHead title="MockServices · Switchboard" />
+      <PageHead title="Mock Service Templates · Switchboard" />
       <Grid item xs={12}>
         <Paper>
-          <TextField fullWidth placeholder="Search Mock Services" autoFocus></TextField>
+          <TextField fullWidth placeholder="Search Mock Service Templates" autoFocus></TextField>
         </Paper>
       </Grid>
       <Grid item xs={12}>

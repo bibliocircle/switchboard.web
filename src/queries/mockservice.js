@@ -6,12 +6,6 @@ export const GET_MOCK_SERVICES = gql`
       id
       name
       type
-      config {
-        injectHeaders {
-          name
-          value
-        }
-      }
       createdBy {
         firstName
         lastName
@@ -33,6 +27,7 @@ export const GET_MOCK_SERVICE_BY_ID = gql`
           name
           value
         }
+        globalResponseDelay
       }
       createdBy {
         ...userFields
@@ -65,7 +60,6 @@ export const GET_MOCK_SERVICE_BY_ID = gql`
             type
           }
           proxyScenarioConfig {
-            name
             injectHeaders {
                 name
                 value

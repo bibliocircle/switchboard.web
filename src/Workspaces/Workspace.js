@@ -1,12 +1,6 @@
 import { useQuery } from "@apollo/client";
-import TimerIcon from "@mui/icons-material/Timer";
 import {
   Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Paper,
   TextField,
   Typography,
@@ -14,14 +8,13 @@ import {
 import dayjs from "dayjs";
 import React from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Section from "../Common/Section";
-import { BACKEND_URL } from "../config";
 import { GET_USER_WORKSPACE } from "../queries/workspaces";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import { getUserFullName } from "../utils/strings";
-
-const getBackendHost = () => new URL(BACKEND_URL).origin;
+import MockServiceCard from "../MockServices/MockServiceCard";
+import { ServiceCard } from "../MockServices/MockServices";
 
 export default function Workspace() {
   const { workspaceId } = useParams();
@@ -62,17 +55,13 @@ export default function Workspace() {
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <List>
+                <Grid container spacing={2}>
                   {ws.mockServices.map((ms) => (
-                    <Paper key={ms.id}>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemText primary={ms.name} />
-                        </ListItemButton>
-                      </ListItem>
-                    </Paper>
+                    <ServiceCard component={Link} to={`/workspace/${ws.id}/mockservice/${ms.id}`} key={ms.id} item xs={6}>
+                      <MockServiceCard mockService={ms} />
+                    </ServiceCard>
                   ))}
-                </List>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

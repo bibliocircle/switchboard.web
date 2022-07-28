@@ -23,7 +23,7 @@ export const lightTheme = createTheme({
       light: "#93F9B9"
     }
   },
-  shadows: ["none"]
+  shadows: new Array(10).fill("none")
 });
 
 export const LIGHT_THEME = "light";

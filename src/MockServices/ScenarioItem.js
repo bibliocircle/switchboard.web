@@ -1,24 +1,35 @@
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Grid, styled, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+  styled,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import CodeSnippet from "../Common/CodeSnippet";
 import { SCENARIO_TYPE_MAP } from "../config";
 import { DARK_THEME } from "../theme";
 import { getStatusCodeText } from "../utils/httpStatusCodes";
 
-const ScenarioType = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0.5),
-    backgroundColor:
-      theme.palette.mode === DARK_THEME
-        ? theme.palette.grey[700]
-        : theme.palette.grey[200],
-    fontSize: 11,
-    fontWeight: "bold",
-    textAlign: "center",
-    borderRadius: theme.shape.borderRadius,
-  }));
+export const ScenarioType = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0.5),
+  backgroundColor:
+    theme.palette.mode === DARK_THEME
+      ? theme.palette.grey[700]
+      : theme.palette.grey[200],
+  fontSize: 11,
+  fontWeight: "bold",
+  textAlign: "center",
+  borderRadius: theme.shape.borderRadius,
+}));
 
-const getScenarioHeader = (sc) => {
+export const ScenarioUpstreamName = styled("span")(() => ({
+  fontWeight: "bold",
+}));
+
+export const getScenarioHeader = (sc) => {
   switch (sc.type) {
     case "HTTP_RESPONSE":
       return (
@@ -30,7 +41,12 @@ const getScenarioHeader = (sc) => {
       );
     case "PROXY":
       return (
-        <Typography variant="body2">{sc.proxyScenarioConfig.name}</Typography>
+        <Typography variant="body2">
+          Proxy to{" "}
+          <ScenarioUpstreamName>
+            {sc.proxyScenarioConfig.upstream.name}
+          </ScenarioUpstreamName>
+        </Typography>
       );
     case "NETWORK":
       return (
@@ -41,7 +57,7 @@ const getScenarioHeader = (sc) => {
   }
 };
 
-const getScenarioDetails = (sc) => {
+export const getScenarioDetails = (sc) => {
   switch (sc.type) {
     case "HTTP_RESPONSE":
       return (
@@ -119,7 +135,9 @@ const getScenarioDetails = (sc) => {
 export default function ScenarioItem({ sc, expandable }) {
   return (
     <Accordion disableGutters>
-      <AccordionSummary sx={{ cursor: expandable ? "pointer" : "default"}} expandIcon={expandable && <ExpandMoreIcon />}>
+      <AccordionSummary
+        expandIcon={expandable && <ExpandMoreIcon />}
+      >
         <Grid container spacing={1} alignItems="center">
           <Grid item xs={2}>
             <ScenarioType>{SCENARIO_TYPE_MAP[sc.type]}</ScenarioType>

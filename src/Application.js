@@ -17,6 +17,7 @@ import Users from "./Users/Users";
 import MockService from "./MockServices/MockService";
 import PageHead from "./Common/PageHead";
 import Workspace from "./Workspaces/Workspace";
+import WorkspaceSetting from "./Workspaces/WorkspaceSetting";
 
 const ColorModeContext = React.createContext({ onToggleColourMode: () => {} });
 
@@ -71,6 +72,7 @@ function Application() {
               <Route path="/mockservices" element={<MockServices />} />
               <Route path="/mockservice/:mockServiceId" element={<MockService />} />
               <Route path="/workspaces" element={<Workspaces />} />
+              <Route path="/workspace/:workspaceId/mockservice/:mockServiceId" element={<WorkspaceSetting />} />
               <Route path="/workspace/:workspaceId" element={<Workspace />} />
               <Route path="/users" element={<Users />} />
             </Route>

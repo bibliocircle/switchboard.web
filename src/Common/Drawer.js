@@ -81,7 +81,7 @@ export default function Drawer({ open, toggleDrawer }) {
           <ListItemIcon>
             <MiscellaneousServicesIcon />
           </ListItemIcon>
-          <ListItemText primary="Mock Services" />
+          <ListItemText primary="Templates" />
         </ListItemButton>
         <ListItemButton component={Link} to="/workspaces">
           <ListItemIcon>
@@ -102,7 +102,7 @@ export default function Drawer({ open, toggleDrawer }) {
               Your Workspaces
             </ListSubheader>
             {data?.userWorkspaces?.map((ws) => (
-              <ListItemButton component={Link} to={`/workspace/${ws.id}`}>
+              <ListItemButton key={ws.id} component={Link} to={`/workspace/${ws.id}`}>
                 <ListItemIcon>
                   <HandymanIcon />
                 </ListItemIcon>
