@@ -20,7 +20,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { MOCK_SERVICE_TYPE_MAP } from "../config";
-import { GET_MOCK_SERVICE_BY_ID } from "../queries/mockservice";
+import { GET_MOCK_SERVICE_BY_ID } from "../gql/queries/mockservice";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import { DARK_THEME } from "../theme";
 import { getUserFullName } from "../utils/strings";

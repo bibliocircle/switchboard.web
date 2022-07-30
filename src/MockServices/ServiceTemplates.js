@@ -13,7 +13,7 @@ export const ServiceCard = styled(Grid)({
   textDecoration: "none",
 });
 
-export default function MockServices() {
+export default function ServiceTemplates() {
   const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { loading, error, data } = useQuery(GET_MOCK_SERVICES, {
     variables: {},
@@ -41,10 +41,10 @@ export default function MockServices() {
   }
   return (
     <Grid container spacing={3}>
-      <PageHead title="Mock Service Templates · Switchboard" />
+      <PageHead title="Service Templates · Switchboard" />
       <Grid item xs={12}>
         <Paper>
-          <TextField fullWidth placeholder="Search Mock Service Templates" autoFocus></TextField>
+          <TextField fullWidth placeholder="Search Service Templates" autoFocus></TextField>
         </Paper>
       </Grid>
       <Grid item xs={12}>

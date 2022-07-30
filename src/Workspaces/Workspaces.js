@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
-import { GET_WORKSPACES } from "../queries/workspaces";
+import { GET_WORKSPACES } from "../gql/queries/workspaces";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import WorkspaceCard from "./WorkspaceCard";
 import WorkspaceCardSkeleton from "./WorkspaceCardSkeleton";

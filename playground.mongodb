@@ -1,0 +1,159 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('switchboard');
+
+db.scenarios.insertMany([
+    {
+        "id": "8eec53db-0282-4d7c-ae71-028cf8aa0566",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "HTTP_RESPONSE",
+        "isDefault": true,
+        "httpResponseScenarioConfig": {
+            "statusCode": 200,
+            "responseBodyTemplate": "{ \"Destination\": \"{{Country}}\" }",
+            "responseHeadersTemplate": "{ \"x-timestamp\": \"{{ISODate}}\" }"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "7f27ccbd-9ebc-4862-952a-2ad6f47774d8",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "HTTP_RESPONSE",
+        "isDefault": false,
+        "httpResponseScenarioConfig": {
+            "statusCode": 401,
+            "responseBodyTemplate": "{ \"Destination\": \"{{Country}}\" }",
+            "responseHeadersTemplate": "{ \"x-timestamp\": \"{{ISODate}}\" }"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "99806750-4dd1-4d21-997d-e97617070074",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "HTTP_RESPONSE",
+        "isDefault": false,
+        "httpResponseScenarioConfig": {
+            "statusCode": 403,
+            "responseBodyTemplate": "{ \"Destination\": \"{{Country}}\" }",
+            "responseHeadersTemplate": "{ \"x-timestamp\": \"{{ISODate}}\" }"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "76b3a2b9-3677-4709-9b2a-c0c89a3dcb87",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "HTTP_RESPONSE",
+        "isDefault": false,
+        "httpResponseScenarioConfig": {
+            "statusCode": 429,
+            "responseBodyTemplate": "{ \"Destination\": \"{{Country}}\" }",
+            "responseHeadersTemplate": "{ \"x-timestamp\": \"{{ISODate}}\" }"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "55ec74ff-63cb-4c66-8171-fd088973a709",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "HTTP_RESPONSE",
+        "isDefault": false,
+        "httpResponseScenarioConfig": {
+            "statusCode": 500
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "6c4da49c-89ac-4640-8b77-7ceffbf64803",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "PROXY",
+        "isDefault": false,
+        "proxyScenarioConfig": {
+            "upstreamID": "9b8de7e6-bb8f-4134-9351-a9bda9d82bac",
+            "injectHeaders": {
+                "x-proxied-by": "switchboard/1.0.0"
+            }
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "144b9d08-7ffd-4fb6-ba7a-f8a16b514881",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "PROXY",
+        "isDefault": false,
+        "proxyScenarioConfig": {
+            "upstreamID": "e970caf4-25cb-453d-b1d0-52a96b99f179",
+            "injectHeaders": {
+                "x-proxied-by": "switchboard/1.0.0"
+            }
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "1ea1fae3-47f5-4be0-ba2c-fd8f7496187c",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "PROXY",
+        "isDefault": false,
+        "proxyScenarioConfig": {
+            "upstreamID": "1a30405b-4b6d-4354-8500-343f8f8750cc",
+            "injectHeaders": {
+                "x-proxied-by": "switchboard/1.0.0"
+            }
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "68e52d66-6371-42a0-a466-188d5d821bab",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "NETWORK",
+        "isDefault": false,
+        "networkScenarioConfig": {
+            "type": "ECONNABORTED"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "aeb29ef6-2b6e-4f17-898b-9306e3b3dcb4",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "NETWORK",
+        "isDefault": false,
+        "networkScenarioConfig": {
+            "type": "ECONNREFUSED"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    },
+    {
+        "id": "457cd168-9599-4ccb-a35c-8b36c5001bdf",
+        "endpointId": "dbddcede-51ef-4d7f-948b-bcb683d5bb1f",
+        "type": "NETWORK",
+        "isDefault": false,
+        "networkScenarioConfig": {
+            "type": "ECONNRESET"
+        },
+        "createdBy": "3cb05fc7-c13b-470a-adee-4e8dff659b70",
+        "createdAt": ISODate(),
+        "updatedAt": ISODate()
+    }
+])

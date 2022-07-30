@@ -6,14 +6,14 @@ import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
 import { GET_MOCK_SERVICES } from "../gql/queries/mockservice";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
-import MockServiceCard from "./MockServiceCard";
-import MockServiceCardSkeleton from "./MockServiceCardSkeleton";
+import ServiceTemplateCard from "./ServiceTemplateCard";
+import ServiceTemplateCardSkeleton from "./ServiceTemplateCardSkeleton";
 
 export const ServiceCard = styled(Grid)({
   textDecoration: "none",
 });
 
-export default function MockServices() {
+export default function ServiceTemplates() {
   const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { loading, error, data } = useQuery(GET_MOCK_SERVICES, {
     variables: {},
@@ -24,13 +24,13 @@ export default function MockServices() {
     return (
       <Grid container spacing={3}>
         <Grid item xs={4}>
-          <MockServiceCardSkeleton />
+          <ServiceTemplateCardSkeleton />
         </Grid>
         <Grid item xs={4}>
-          <MockServiceCardSkeleton />
+          <ServiceTemplateCardSkeleton />
         </Grid>
         <Grid item xs={4}>
-          <MockServiceCardSkeleton />
+          <ServiceTemplateCardSkeleton />
         </Grid>
       </Grid>
     );
@@ -41,10 +41,10 @@ export default function MockServices() {
   }
   return (
     <Grid container spacing={3}>
-      <PageHead title="Mock Service Templates · Switchboard" />
+      <PageHead title="Service Templates · Switchboard" />
       <Grid item xs={12}>
         <Paper>
-          <TextField fullWidth placeholder="Search Mock Service Templates" autoFocus></TextField>
+          <TextField fullWidth placeholder="Search Service Templates" autoFocus></TextField>
         </Paper>
       </Grid>
       <Grid item xs={12}>
@@ -55,9 +55,9 @@ export default function MockServices() {
               item
               xs={4}
               component={Link}
-              to={`/mockservice/${ms.id}`}
+              to={`/serviceTemplate/${ms.id}`}
             >
-              <MockServiceCard mockService={ms} />
+              <ServiceTemplateCard mockService={ms} />
             </ServiceCard>
           ))}
         </Grid>

@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material";
@@ -14,27 +14,19 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { BACKEND_URL, MOCK_SERVICE_TYPE_MAP } from "../config";
+import { MOCK_SERVICE_TYPE_MAP } from "../config";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import Section from '../Common/Section'
 import { MockServiceType, UpstreamCard } from "../MockServices/MockService";
 import EndpointConfigCard from "./EndpointConfigCard";
-import { GET_WORKSPACE_SETTING } from "../queries/workspace_setting";
-
-const activateScenario = async ({ workspaceId, mockServiceId, endpointId, scenarioId }) => {
-  const res = await fetch(`${BACKEND_URL}/workspace/${workspaceId}/mockservice/${mockServiceId}/endpoint/${endpointId}/scenario/${scenarioId}/activate`, {
-    method: "put",
-    credentials: "include"
-  })
-  if (res.status === 200) {
-    alert('done')
-  } else {
-    alert(res.status)
-  }
-}
+import { GET_WORKSPACE_SETTING } from "../gql/queries/workspace_setting";
+import { ACTIVATE_MOCK_SERVICE_SCENARIO } from "../gql/mutations/workspace_setting";
+import { getGqlErrorCode, GQL_NOT_FOUND_ERROR } from "../gql/errors";
+import ErrorBanner from "../Common/ErrorBanner";
 
 export default function WorkspaceSetting() {
   const user = useSelector(LOGGED_IN_USER_SELECTOR);
+  const [activateMockServiceScenario] = useMutation(ACTIVATE_MOCK_SERVICE_SCENARIO)
   const { mockServiceId, workspaceId } = useParams();
   const { loading, error, data } = useQuery(GET_WORKSPACE_SETTING, {
     variables: {
@@ -44,11 +36,30 @@ export default function WorkspaceSetting() {
     skip: !user,
   });
 
+  const activateScenario = async ({ workspaceId, mockServiceId, endpointId, scenarioId }) => {
+    try {
+      await activateMockServiceScenario({
+        variables: {
+          workspaceId,
+          mockServiceId,
+          endpointId,
+          scenarioId
+        }
+      })
+    } catch (err) {
+      alert('oops')
+      console.error(err)
+    }
+  }
+
   if (loading) {
     return <div>loading</div>;
   }
   if (error) {
-    return <div>error</div>;
+    if (getGqlErrorCode(error) === GQL_NOT_FOUND_ERROR) {
+      return <ErrorBanner message="Workspace does not exist or mock service not found on this workspace!" />
+    }
+    return <ErrorBanner message="Unknown error occurred! Please try later" />;
   }
 
   if (!data) return null;

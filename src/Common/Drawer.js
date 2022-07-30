@@ -18,7 +18,7 @@ import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useQuery } from "@apollo/client";
-import { GET_USER_WORKSPACES } from "../queries/workspaces";
+import { GET_USER_WORKSPACES } from "../gql/queries/workspaces";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 
 export const drawerWidth = 240;

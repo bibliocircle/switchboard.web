@@ -10,7 +10,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Section from "../Common/Section";
-import { GET_USER_WORKSPACE } from "../queries/workspaces";
+import { GET_USER_WORKSPACE } from "../gql/queries/workspaces";
 import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import { getUserFullName } from "../utils/strings";
 import MockServiceCard from "../MockServices/MockServiceCard";

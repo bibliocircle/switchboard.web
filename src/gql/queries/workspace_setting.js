@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_WORKSPACE_SETTING = gql`
   query GetWorkspaceSetting($workspaceId: String, $mockServiceId: String) {
     workspaceSetting(workspaceId: $workspaceId, mockServiceId: $mockServiceId) {
+      id
       workspace {
         id
         name
@@ -25,6 +26,7 @@ export const GET_WORKSPACE_SETTING = gql`
         }
       }
       endpointConfigs {
+        id
         endpoint {
           id
           method
@@ -32,6 +34,7 @@ export const GET_WORKSPACE_SETTING = gql`
           description
         }
         scenarioConfigs {
+          id
           scenario {
             id
             type
