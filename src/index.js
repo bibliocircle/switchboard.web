@@ -20,8 +20,10 @@ const client = new ApolloClient({
       if (graphQLErrors) {
         // Redirect user back to login if user needs to re-authenticate
         const requireReAuth = graphQLErrors.some(
-          ({ gqlErrorCode }) => gqlErrorCode === "UNAUTHENTICATED"
+          ({ extensions }) => extensions?.code === "UNAUTHORISED"
         );
+
+        console.log(graphQLErrors);
         if (requireReAuth) {
           try {
             const redirectPath = window.location.href.replace(
