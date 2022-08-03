@@ -1,11 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { Grid, Paper, styled, TextField } from "@mui/material";
+import { Button, Grid, Paper, styled, TextField } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
 import { GET_WORKSPACES } from "../gql/queries/workspaces";
-import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import WorkspaceCard from "./WorkspaceCard";
 import WorkspaceCardSkeleton from "./WorkspaceCardSkeleton";
 
@@ -14,11 +12,7 @@ const WSCard = styled(Grid)({
 });
 
 export default function Workspaces() {
-  const user = useSelector(LOGGED_IN_USER_SELECTOR);
-  const { loading, error, data } = useQuery(GET_WORKSPACES, {
-    variables: {},
-    skip: !user,
-  });
+  const { loading, error, data } = useQuery(GET_WORKSPACES);
 
   if (loading) {
     return (
@@ -43,9 +37,16 @@ export default function Workspaces() {
     <Grid container spacing={3}>
       <PageHead title="Workspaces · Switchboard" />
       <Grid item xs={12}>
-        <Paper>
-          <TextField fullWidth placeholder="Search Workspaces" autoFocus></TextField>
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item xs={10}>
+          <Paper>
+          <TextField size="small" fullWidth placeholder="Search Workspaces" autoFocus></TextField>
         </Paper>
+          </Grid>
+          <Grid item xs={2}>
+            <Button fullWidth variant="contained" color="primary">Create Workspace</Button>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={3}>

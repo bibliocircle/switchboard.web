@@ -4,7 +4,6 @@ import {
   styled,
 } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
 import { GET_MOCK_SERVICES } from "../gql/queries/mockservice";
@@ -16,11 +15,7 @@ const ServiceCard = styled(Grid)({
 });
 
 export default function MockServices() {
-  const user = useSelector((s) => s.user.loggedInUser);
-  const { loading, error, data } = useQuery(GET_MOCK_SERVICES, {
-    variables: {},
-    skip: !user,
-  });
+  const { loading, error, data } = useQuery(GET_MOCK_SERVICES);
 
   if (loading) {
     return <Grid container spacing={3}>

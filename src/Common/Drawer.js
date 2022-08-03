@@ -51,9 +51,7 @@ const StyledDrawer = styled(MuiDrawer, {
 
 export default function Drawer({ open, toggleDrawer }) {
   const user = useSelector(LOGGED_IN_USER_SELECTOR);
-  const { loading, error, data } = useQuery(GET_USER_WORKSPACES, {
-    skip: !user,
-  });
+  const { loading, error, data } = useQuery(GET_USER_WORKSPACES);
 
   return (
     <StyledDrawer variant="permanent" open={open}>

@@ -17,15 +17,13 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import React from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { MOCK_SERVICE_TYPE_MAP } from "../config";
 import { GET_MOCK_SERVICE_BY_ID } from "../gql/queries/mockservice";
-import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import { DARK_THEME } from "../theme";
 import { getUserFullName } from "../utils/strings";
 import EndpointCard from "./EndpointCard";
-import Section from '../Common/Section'
+import Section from "../Common/Section";
 
 export const MockServiceType = styled(Chip)(({ theme }) => ({
   fontWeight: "bold",
@@ -69,13 +67,11 @@ export function UpstreamCard({ upstream }) {
 }
 
 export default function MockService() {
-  const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { mockServiceId } = useParams();
   const { loading, error, data } = useQuery(GET_MOCK_SERVICE_BY_ID, {
     variables: {
       id: mockServiceId,
     },
-    skip: !user,
   });
 
   if (loading) {
@@ -161,12 +157,18 @@ export default function MockService() {
                             </Typography>
                           </AccordionSummary>
                           <AccordionDetails>
-                            {ms.config.injectHeaders.map(({ name, value }) => (
-                              <Typography
-                                variant="caption"
-                                key={name}
-                              >{`${name}: "${value}"`}</Typography>
-                            ))}
+                            <Grid container>
+                              {ms.config.injectHeaders.map(
+                                ({ name, value }) => (
+                                  <Grid item xs={12} key={name}>
+                                    <Typography
+                                      variant="caption"
+                                      key={name}
+                                    >{`${name}: "${value}"`}</Typography>
+                                  </Grid>
+                                )
+                              )}
+                            </Grid>
                           </AccordionDetails>
                         </Accordion>
                         <Accordion disableGutters>

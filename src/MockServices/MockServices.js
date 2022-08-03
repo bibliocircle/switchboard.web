@@ -1,11 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { Grid, Paper, styled, TextField } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
 import { GET_MOCK_SERVICES } from "../gql/queries/mockservice";
-import { LOGGED_IN_USER_SELECTOR } from "../store/slices/user";
 import MockServiceCard from "./MockServiceCard";
 import MockServiceCardSkeleton from "./MockServiceCardSkeleton";
 
@@ -14,10 +12,8 @@ export const ServiceCard = styled(Grid)({
 });
 
 export default function MockServices() {
-  const user = useSelector(LOGGED_IN_USER_SELECTOR);
   const { loading, error, data } = useQuery(GET_MOCK_SERVICES, {
     variables: {},
-    skip: !user,
   });
 
   if (loading) {
