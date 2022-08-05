@@ -16,3 +16,8 @@ export const SCENARIO_TYPE_MAP = {
   PROXY: "Proxy",
   NETWORK: "Network",
 }
+
+export const gqlErrorCodes = {
+  DUPLICATE_ENTITY: "DUPLICATE_ENTITY",
+  UNAUTHORISED: "UNAUTHORISED"
+}

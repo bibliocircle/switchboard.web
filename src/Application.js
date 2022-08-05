@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import NotFound from "./NotFound";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Home from "./Home";
@@ -18,6 +18,7 @@ import MockService from "./MockServices/MockService";
 import PageHead from "./Common/PageHead";
 import Workspace from "./Workspaces/Workspace";
 import WorkspaceSetting from "./Workspaces/WorkspaceSetting";
+import CreateWorkspacePage from "./Workspaces/CreateWorkspacePage";
 
 const ColorModeContext = React.createContext({ onToggleColourMode: () => {} });
 
@@ -69,8 +70,10 @@ function Application() {
                 />
               }
             >
+              <Route path="/" element={<Navigate to="/mockservices" replace/>} />
               <Route path="/mockservices" element={<MockServices />} />
               <Route path="/mockservice/:mockServiceId" element={<MockService />} />
+              <Route path="/workspace/new" element={<CreateWorkspacePage />} />
               <Route path="/workspaces" element={<Workspaces />} />
               <Route path="/workspace/:workspaceId/mockservice/:mockServiceId" element={<WorkspaceSetting />} />
               <Route path="/workspace/:workspaceId" element={<Workspace />} />

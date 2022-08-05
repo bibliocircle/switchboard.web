@@ -15,27 +15,22 @@ export const GET_WORKSPACES = gql`
   }
 `;
 
-export const GET_USER_WORKSPACES = gql`
-  query GetWorkspaces {
-    userWorkspaces {
+export const GET_WORKSPACE_DETAILS = gql`
+  query GetWorkspaceDetails($workspaceId: String!) {
+    workspace(id: $workspaceId) {
       id
       name
       createdAt
-      expiresAt
+      updatedAt
       createdBy {
+        id
         firstName
         lastName
       }
     }
-  }
-`;
-
-export const GET_USER_WORKSPACE = gql`
-  query GetUserWorkspace($workspaceId: String) {
-    userWorkspace(workspaceId: $workspaceId) {
+    workspaceSettings(workspaceId: $workspaceId) {
       id
-      name
-      mockServices {
+      mockService {
         id
         name
         type
@@ -51,12 +46,6 @@ export const GET_USER_WORKSPACE = gql`
         }
         createdAt
         updatedAt
-      }
-      createdAt
-      expiresAt
-      createdBy {
-        firstName
-        lastName
       }
     }
   }

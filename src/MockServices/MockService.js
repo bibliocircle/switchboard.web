@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
@@ -7,23 +7,32 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Button,
   Chip,
+  FormControl,
+  FormHelperText,
   Grid,
   InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
   styled,
   TextField,
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import React from "react";
-import { useParams } from "react-router-dom";
-import { MOCK_SERVICE_TYPE_MAP } from "../config";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { gqlErrorCodes, MOCK_SERVICE_TYPE_MAP } from "../config";
 import { GET_MOCK_SERVICE_BY_ID } from "../gql/queries/mockservice";
 import { DARK_THEME } from "../theme";
 import { getUserFullName } from "../utils/strings";
 import EndpointCard from "./EndpointCard";
 import Section from "../Common/Section";
+import { GET_WORKSPACES } from "../gql/queries/workspaces";
+import { ADD_MOCK_SERVICE_TO_WORKSPACE } from "../gql/mutations/workspace";
+import { getGqlErrorCode } from "../gql/errors";
 
 export const MockServiceType = styled(Chip)(({ theme }) => ({
   fontWeight: "bold",
@@ -68,21 +77,62 @@ export function UpstreamCard({ upstream }) {
 
 export default function MockService() {
   const { mockServiceId } = useParams();
-  const { loading, error, data } = useQuery(GET_MOCK_SERVICE_BY_ID, {
+  const navigate = useNavigate();
+  const [selectedWsId, setSelectedWsId] = useState(null);
+  const [addMockServiceToWorkspace] = useMutation(
+    ADD_MOCK_SERVICE_TO_WORKSPACE
+  );
+  const [mockServiceCreateError, setMockServiceCreateError] = useState(null);
+  const {
+    loading: fetchingWs,
+    error: fetchWsError,
+    data: wsData,
+  } = useQuery(GET_WORKSPACES);
+  const {
+    loading: fetchingMs,
+    error: fetchMsError,
+    data: msData,
+  } = useQuery(GET_MOCK_SERVICE_BY_ID, {
     variables: {
       id: mockServiceId,
     },
   });
 
-  if (loading) {
+  if (fetchingMs) {
     return <div>loading</div>;
   }
-  if (error) {
+  if (fetchMsError) {
     return <div>error</div>;
   }
 
-  if (!data) return null;
-  const ms = data.mockService;
+  if (!msData) return null;
+  const ms = msData.mockService;
+
+  const onSelectWs = (e) => {
+    setSelectedWsId(e.target.value);
+  };
+
+  const onClickAddMockServiceToWorkspace = async () => {
+    setMockServiceCreateError(null);
+    if (!selectedWsId) return;
+    try {
+      await addMockServiceToWorkspace({
+        variables: {
+          workspaceId: selectedWsId,
+          mockServiceId,
+        },
+      });
+      navigate(`/workspace/${selectedWsId}/mockservice/${mockServiceId}`);
+    } catch (err) {
+      const errorCode = getGqlErrorCode(err);
+      if (errorCode === gqlErrorCodes.DUPLICATE_ENTITY) {
+        return setMockServiceCreateError(
+          `${ms.name} is already added to this workspace`
+        );
+      }
+      alert(err.message);
+    }
+  };
 
   return (
     <Grid container spacing={4}>
@@ -119,27 +169,6 @@ export default function MockService() {
           </Grid>
           <Grid item xs={4}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Section container>
-                  <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <Typography textAlign="center" variant="body2">
-                          Start configuring this mock service by adding it to
-                          your workspace.
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Grid container justifyContent="center">
-                          <Button variant="contained" startIcon={<AddIcon />}>
-                            Add to workspace
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Section>
-              </Grid>
               <Grid item xs={12}>
                 <Section container alignContent="flex-start">
                   <Grid item xs={12}>
@@ -245,6 +274,67 @@ export default function MockService() {
                               )}
                             </Typography>
                           </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Section>
+              </Grid>
+              <Grid item xs={12}>
+                <Section container>
+                  <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Typography textAlign="center" variant="body2">
+                          Start configuring this mock service by adding it to a
+                          workspace.
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Grid container justifyContent="center">
+                          <Grid item xs={12} lg={8}>
+                            <FormControl fullWidth variant="filled">
+                              <InputLabel id="select-ws">
+                                Select Workspace
+                              </InputLabel>
+                              <Select
+                                labelId="select-ws"
+                                fullWidth
+                                value={selectedWsId}
+                                onChange={onSelectWs}
+                              >
+                                {wsData?.workspaces?.map((ws) => (
+                                  <MenuItem key={ws.id} value={ws.id}>
+                                    {ws.name}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Grid container spacing={1}>
+                          <Grid item xs={12}>
+                            <Grid container justifyContent="center">
+                              <Button
+                                onClick={onClickAddMockServiceToWorkspace}
+                                variant="contained"
+                                startIcon={<AddIcon />}
+                              >
+                                Add Mock Service to Workspace
+                              </Button>
+                            </Grid>
+                          </Grid>
+                          {mockServiceCreateError && (
+                            <Grid item xs={12}>
+                              <Grid container justifyContent="center">
+                                <FormHelperText error>
+                                  {mockServiceCreateError}
+                                </FormHelperText>
+                              </Grid>
+                            </Grid>
+                          )}
                         </Grid>
                       </Grid>
                     </Grid>

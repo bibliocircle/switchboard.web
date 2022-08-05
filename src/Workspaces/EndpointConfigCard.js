@@ -84,7 +84,9 @@ export default function EndpointConfigCard({
               <Grid item xs={12}>
                 {endpointConfig.scenarioConfigs.map((sc) => (
                   <ScenarioConfigCard
-                    onActivateScenario={() => onActivateScenario(sc.scenario.id)}
+                    onActivateScenario={() =>
+                      onActivateScenario(sc.scenario.id)
+                    }
                     key={sc.scenario.id}
                     sc={sc}
                     expandable={sc.scenario.type !== "NETWORK"}

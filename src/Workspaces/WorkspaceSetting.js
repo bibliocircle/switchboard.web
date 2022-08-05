@@ -138,7 +138,7 @@ export default function WorkspaceSetting() {
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <Alert severity="info" fullWidth icon={<LinkIcon />}>
+                        <Alert sx={{background: "mojito"}} fullWidth icon={<LinkIcon />}>
                           <Typography variant="caption" color="textPrimary">
                             {getMockServiceUrl()}
                           </Typography>

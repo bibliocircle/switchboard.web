@@ -39,12 +39,25 @@ export default function Workspaces() {
       <Grid item xs={12}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item xs={10}>
-          <Paper>
-          <TextField size="small" fullWidth placeholder="Search Workspaces" autoFocus></TextField>
-        </Paper>
+            <Paper>
+              <TextField
+                size="small"
+                fullWidth
+                placeholder="Search Workspaces"
+                autoFocus
+              ></TextField>
+            </Paper>
           </Grid>
           <Grid item xs={2}>
-            <Button fullWidth variant="contained" color="primary">Create Workspace</Button>
+            <Button
+              LinkComponent={Link}
+              to="/workspace/new"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              Create Workspace
+            </Button>
           </Grid>
         </Grid>
       </Grid>

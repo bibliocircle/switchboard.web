@@ -6,7 +6,7 @@ import {
   Grid,
   Radio,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SCENARIO_TYPE_MAP } from "../config";
 import {
   getScenarioDetails,
@@ -19,11 +19,19 @@ export default function ScenarioConfigCard({
   expandable,
   onActivateScenario,
 }) {
+  const [active, setActive] = useState(false)
   const onClickActivateScenario = (e) => {
+    setActive(true)
     e.preventDefault();
     e.stopPropagation();
-    onActivateScenario();
+    setTimeout(() => {
+      onActivateScenario();
+    })
   };
+
+  useEffect(() => {
+    setActive(sc.isActive)
+  }, [sc])
   return (
     <Accordion disableGutters>
       <AccordionSummary
@@ -32,7 +40,7 @@ export default function ScenarioConfigCard({
       >
         <Grid container spacing={1} alignItems="center">
           <Grid item xs={1}>
-            <Radio checked={sc.isActive} onClick={onClickActivateScenario} />
+            <Radio checked={active} onClick={onClickActivateScenario} />
           </Grid>
           <Grid item xs={2}>
             <ScenarioType>{SCENARIO_TYPE_MAP[sc.scenario.type]}</ScenarioType>

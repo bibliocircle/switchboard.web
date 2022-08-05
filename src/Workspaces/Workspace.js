@@ -9,22 +9,23 @@ import dayjs from "dayjs";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import Section from "../Common/Section";
-import { GET_USER_WORKSPACE } from "../gql/queries/workspaces";
+import { GET_WORKSPACE_DETAILS } from "../gql/queries/workspaces";
 import { getUserFullName } from "../utils/strings";
 import MockServiceCard from "../MockServices/MockServiceCard";
 import { ServiceCard } from "../MockServices/MockServices";
 
 export default function Workspace() {
   const { workspaceId } = useParams();
-  const { loading, error, data } = useQuery(GET_USER_WORKSPACE, {
+  const { loading, error, data } = useQuery(GET_WORKSPACE_DETAILS, {
     variables: { workspaceId },
   });
 
   if (loading) return <div>loading...</div>;
   if (error) return <div>error</div>;
-  if (!data?.userWorkspace) return null;
+  if (!data) return null;
 
-  const ws = data.userWorkspace;
+  const ws = data.workspace;
+  const wsSettings = data.workspaceSettings
 
   return (
     <Grid container spacing={4}>
@@ -52,9 +53,9 @@ export default function Workspace() {
               </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={2}>
-                  {ws.mockServices.map((ms) => (
-                    <ServiceCard component={Link} to={`/workspace/${ws.id}/mockservice/${ms.id}`} key={ms.id} item xs={6}>
-                      <MockServiceCard mockService={ms} />
+                  {wsSettings.map((wss) => (
+                    <ServiceCard component={Link} to={`/workspace/${ws.id}/mockservice/${wss.mockService.id}`} key={wss.id} item xs={6}>
+                      <MockServiceCard mockService={wss.mockService} />
                     </ServiceCard>
                   ))}
                 </Grid>

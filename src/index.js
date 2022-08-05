@@ -11,7 +11,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { BACKEND_URL } from "./config";
+import { BACKEND_URL, gqlErrorCodes } from "./config";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -20,10 +20,8 @@ const client = new ApolloClient({
       if (graphQLErrors) {
         // Redirect user back to login if user needs to re-authenticate
         const requireReAuth = graphQLErrors.some(
-          ({ extensions }) => extensions?.code === "UNAUTHORISED"
+          ({ extensions }) => extensions?.code === gqlErrorCodes.UNAUTHORISED
         );
-
-        console.log(graphQLErrors);
         if (requireReAuth) {
           try {
             const redirectPath = window.location.href.replace(

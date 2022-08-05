@@ -14,64 +14,40 @@ export const ACTIVATE_MOCK_SERVICE_SCENARIO = gql`
       scenarioId: $scenarioId
     ) {
       id
-      workspace {
+      endpoint {
         id
-        name
-        expiresAt
+        method
+        path
+        description
       }
-      mockService {
+      scenarioConfigs {
         id
-        name
-        type
-        upstreams {
+        scenario {
           id
-          name
-          url
-        }
-      }
-      config {
-        injectHeaders {
-          name
-          value
-        }
-      }
-      endpointConfigs {
-        id
-        endpoint {
-          id
-          method
-          path
-          description
-        }
-        scenarioConfigs {
-          id
-          scenario {
-            id
-            type
-            httpResponseScenarioConfig {
-              statusCode
-              responseBodyTemplate
-              responseHeadersTemplate
+          type
+          httpResponseScenarioConfig {
+            statusCode
+            responseBodyTemplate
+            responseHeadersTemplate
+          }
+          proxyScenarioConfig {
+            upstream {
+              id
+              name
+              url
             }
-            proxyScenarioConfig {
-              upstream {
-                id
-                name
-                url
-              }
-              injectHeaders {
-                name
-                value
-              }
-            }
-            networkScenarioConfig {
-              type
+            injectHeaders {
+              name
+              value
             }
           }
-          isActive
+          networkScenarioConfig {
+            type
+          }
         }
-        responseDelay
+        isActive
       }
+      responseDelay
     }
   }
 `;
