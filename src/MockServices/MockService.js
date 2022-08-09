@@ -292,7 +292,7 @@ export default function MockService() {
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container justifyContent="center">
-                          <Grid item xs={12} lg={8}>
+                          <Grid item xs={12}>
                             <FormControl fullWidth variant="filled">
                               <InputLabel id="select-ws">
                                 Select Workspace

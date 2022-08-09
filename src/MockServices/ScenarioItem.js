@@ -132,9 +132,9 @@ export const getScenarioDetails = (sc) => {
   }
 };
 
-export default function ScenarioItem({ sc, expandable }) {
+export default function ScenarioItem({ sc, expandable, expanded }) {
   return (
-    <Accordion disableGutters>
+    <Accordion disableGutters expanded={expanded}>
       <AccordionSummary
         expandIcon={expandable && <ExpandMoreIcon />}
       >

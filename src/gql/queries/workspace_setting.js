@@ -60,6 +60,12 @@ export const GET_WORKSPACE_SETTING = gql`
           }
           isActive
         }
+        interceptionRules {
+          id
+          name
+          matcherExpression
+          targetScenarioId
+        }
         responseDelay
       }
     }

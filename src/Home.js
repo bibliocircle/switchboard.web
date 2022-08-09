@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
 import NavBar from "./Common/NavBar";
 import Drawer from "./Common/Drawer";
 import { Outlet } from "react-router-dom";
@@ -37,7 +36,7 @@ export default function Home({ onToggleColourMode, currentTheme }) {
       >
         <Toolbar />
         <Grid container justifyContent="center" sx={{mt: 4, mb: 4 }}>
-          <Grid item xs={12} lg={10}>
+          <Grid item xs={12} lg={11}>
           {<Outlet />}
           </Grid>
         </Grid>

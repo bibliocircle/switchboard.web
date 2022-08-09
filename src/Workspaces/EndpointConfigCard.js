@@ -4,19 +4,21 @@ import {
   Chip,
   Grid,
   styled,
-  TextField,
+  Tooltip,
+  Tab,
   Typography,
+  Box,
 } from "@mui/material";
+import AnimationIcon from "@mui/icons-material/Animation";
+import CommitIcon from "@mui/icons-material/Commit";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { amber, blue, green, grey, purple, red } from "@mui/material/colors";
-import React from "react";
-import CodeSnippet from "../Common/CodeSnippet";
+import React, { useState } from "react";
 import { DARK_THEME } from "../theme";
-import ScenarioConfigCard from "./ScenarioConfigCard";
-
-const ScenariosContainer = styled(Grid)(({ theme }) => ({
-  borderRight: `1px solid ${theme.palette.grey[200]}`,
-  paddingRight: theme.spacing(2),
-}));
+import InterceptionRulesPanel from "./InterceptionRulesPanel";
+import ScenariosPanel from "./ScenariosPanel";
+import EndpointGeneralSettingsPanel from "./EndpointGeneralSettingPanel";
+import { Settings as SettingsIcon } from "@mui/icons-material";
 
 const CHIP_COLOUR_INTENSITY = 100;
 const chipColours = {
@@ -42,86 +44,99 @@ const EndpointHeading = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
+const SCENARIOS_TAB = "SCENARIOS_TAB";
+const INTERCEPTION_RULES_TAB = "INTERCEPTION_RULES_TAB";
+const GENERAL_SETTINGS_TAB = "GENERAL_SETTINGS_PANEL";
+
 export default function EndpointConfigCard({
   endpointConfig,
   onActivateScenario,
 }) {
+  const [activeTab, setActiveTab] = useState(SCENARIOS_TAB);
   const chipColour = chipColours[endpointConfig.endpoint.method] || grey[100];
+
+  const onChangeTab = (e, newTabId) => {
+    setActiveTab(newTabId);
+  };
+
   return (
     <Card>
-      <EndpointHeading item xs={12}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={2}>
-                <Grid container alignItems="center">
-                  <MethodChip
-                    sx={{
-                      backgroundColor: chipColour,
-                      color: (theme) =>
-                        theme.palette.getContrastText(chipColour),
-                    }}
-                    label={endpointConfig.endpoint.method}
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={10}>
-                <Typography variant="body1" fontWeight="bold">
-                  {endpointConfig.endpoint.path}
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </EndpointHeading>
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <ScenariosContainer container spacing={1}>
-              <Grid item xs={12}>
-                <Typography variant="subtitle2">Scenarios</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                {endpointConfig.scenarioConfigs.map((sc) => (
-                  <ScenarioConfigCard
-                    onActivateScenario={() =>
-                      onActivateScenario(sc.scenario.id)
-                    }
-                    key={sc.scenario.id}
-                    sc={sc}
-                    expandable={sc.scenario.type !== "NETWORK"}
-                  />
-                ))}
-              </Grid>
-            </ScenariosContainer>
-          </Grid>
-          <Grid item xs={4}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle2">Rules</Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CodeSnippet>No rules configured</CodeSnippet>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle2">Response Delay</Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      size="small"
-                      value={endpointConfig.responseDelay}
+      <Tooltip title={`Endpoint ID: ${endpointConfig.endpoint.id}`}>
+        <EndpointHeading item xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={2}>
+                  <Grid container alignItems="center">
+                    <MethodChip
+                      sx={{
+                        backgroundColor: chipColour,
+                        color: (theme) =>
+                          theme.palette.getContrastText(chipColour),
+                      }}
+                      label={endpointConfig.endpoint.method}
                     />
                   </Grid>
                 </Grid>
+                <Grid item xs={10}>
+                  <Typography variant="body1" fontWeight="bold">
+                    {endpointConfig.endpoint.path}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
+        </EndpointHeading>
+      </Tooltip>
+      <CardContent>
+        <Grid container spacing={2}>
+          <TabContext value={activeTab}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <TabList onChange={onChangeTab}>
+                    <Tab
+                      sx={{textTransform: "unset"}}
+                      iconPosition="start"
+                      label="Scenarios"
+                      value={SCENARIOS_TAB}
+                    />
+                    <Tab
+                      sx={{textTransform: "unset"}}
+                      iconPosition="start"
+                      label="Interception Rules"
+                      value={INTERCEPTION_RULES_TAB}
+                    />
+                    <Tab
+                      sx={{textTransform: "unset"}}
+                      iconPosition="start"
+                      label="General Settings"
+                      value={GENERAL_SETTINGS_TAB}
+                    />
+                  </TabList>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <TabPanel value={SCENARIOS_TAB}>
+                  <ScenariosPanel
+                    scenarioConfigs={endpointConfig.scenarioConfigs}
+                    onActivateScenario={onActivateScenario}
+                  />
+                </TabPanel>
+                <TabPanel value={INTERCEPTION_RULES_TAB}>
+                  <InterceptionRulesPanel
+                    rules={endpointConfig.interceptionRules}
+                    scenarioConfigs={endpointConfig.scenarioConfigs}
+                  />
+                </TabPanel>
+                <TabPanel value={GENERAL_SETTINGS_TAB}>
+                  <EndpointGeneralSettingsPanel
+                    endpointConfig={endpointConfig}
+                  />
+                </TabPanel>
+              </Grid>
+            </Grid>
+          </TabContext>
         </Grid>
       </CardContent>
     </Card>

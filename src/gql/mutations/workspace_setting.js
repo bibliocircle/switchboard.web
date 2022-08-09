@@ -51,3 +51,19 @@ export const ACTIVATE_MOCK_SERVICE_SCENARIO = gql`
     }
   }
 `;
+
+export const CREATE_INTERCEPTION_RULE = gql`
+  mutation CreateInterceptionRule(
+    $workspaceId: String!
+    $mockServiceId: String!
+    $endpointId: String!
+    $interceptionRule: InterceptionRuleInput!
+  ) {
+    createInterceptionRule(
+      workspaceId: $workspaceId
+      mockServiceId: $mockServiceId
+      endpointId: $endpointId
+      interceptionRule: $interceptionRule
+    )
+  }
+`;

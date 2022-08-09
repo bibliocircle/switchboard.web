@@ -1,5 +1,8 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { ExpandMore as ExpandMoreIcon, Link as LinkIcon } from "@mui/icons-material";
+import {
+  ExpandMore as ExpandMoreIcon,
+  Link as LinkIcon,
+} from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -10,9 +13,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BACKEND_URL, CONSUMER_BACKEND_API_PORT, MOCK_SERVICE_TYPE_MAP } from "../config";
+import {
+  BACKEND_URL,
+  CONSUMER_BACKEND_API_PORT,
+  MOCK_SERVICE_TYPE_MAP,
+} from "../config";
 import Section from "../Common/Section";
 import { MockServiceType, UpstreamCard } from "../MockServices/MockService";
 import EndpointConfigCard from "./EndpointConfigCard";
@@ -20,11 +27,14 @@ import { GET_WORKSPACE_SETTING } from "../gql/queries/workspace_setting";
 import { ACTIVATE_MOCK_SERVICE_SCENARIO } from "../gql/mutations/workspace_setting";
 import { getGqlErrorCode, GQL_NOT_FOUND_ERROR } from "../gql/errors";
 import ErrorBanner from "../Common/ErrorBanner";
+import EndpointTab from "./EndpointTab";
 
 export default function WorkspaceSetting() {
   const [activateMockServiceScenario] = useMutation(
     ACTIVATE_MOCK_SERVICE_SCENARIO
   );
+  const [selectedEndpointConfigId, setSelectedEndpointConfigId] =
+    useState(null);
   const { mockServiceId, workspaceId } = useParams();
   const { loading, error, data } = useQuery(GET_WORKSPACE_SETTING, {
     variables: {
@@ -61,6 +71,15 @@ export default function WorkspaceSetting() {
     }
   };
 
+  useEffect(() => {
+    if (data?.workspaceSetting) {
+      setSelectedEndpointConfigId((current) => {
+        if (current) return current;
+        return data.workspaceSetting.endpointConfigs[0].id;
+      });
+    }
+  }, [data]);
+
   if (loading) {
     return <div>loading</div>;
   }
@@ -75,6 +94,26 @@ export default function WorkspaceSetting() {
 
   if (!data) return null;
   const ws = data.workspaceSetting;
+
+  const getEndpointConfig = () => {
+    const selectedEndpointConfig = ws.endpointConfigs.find(
+      (ec) => ec.id === selectedEndpointConfigId
+    );
+
+    return (
+      <EndpointConfigCard
+        onActivateScenario={(scenarioId) =>
+          activateScenario({
+            workspaceId: ws.workspace.id,
+            mockServiceId: ws.mockService.id,
+            endpointId: selectedEndpointConfig.endpoint.id,
+            scenarioId,
+          })
+        }
+        endpointConfig={selectedEndpointConfig}
+      />
+    );
+  };
 
   return (
     <Grid container spacing={4}>
@@ -102,29 +141,22 @@ export default function WorkspaceSetting() {
         </Section>
       </Grid>
       <Grid item xs={12}>
-        <Grid container spacing={4}>
-          <Grid item xs={8}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  {ws.endpointConfigs.map((ec) => (
-                    <Grid item xs={12} lg={12} key={ec.endpoint.id}>
-                      <EndpointConfigCard
-                        onActivateScenario={(scenarioId) =>
-                          activateScenario({
-                            workspaceId: ws.workspace.id,
-                            mockServiceId: ws.mockService.id,
-                            endpointId: ec.endpoint.id,
-                            scenarioId,
-                          })
-                        }
-                        endpointConfig={ec}
-                      />
-                    </Grid>
-                  ))}
+        <Grid container spacing={2}>
+          <Grid item xs={2}>
+            <Grid container spacing={1}>
+              {ws.endpointConfigs.map((ec) => (
+                <Grid key={ec.endpoint.id} item xs={12}>
+                  <EndpointTab
+                    onClick={() => setSelectedEndpointConfigId(ec.id)}
+                    selected={ec.id === selectedEndpointConfigId}
+                    endpointConfig={ec}
+                  />
                 </Grid>
-              </Grid>
+              ))}
             </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {selectedEndpointConfigId && getEndpointConfig()}
           </Grid>
           <Grid item xs={4}>
             <Grid container spacing={2}>
@@ -138,7 +170,11 @@ export default function WorkspaceSetting() {
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <Alert sx={{background: "mojito"}} fullWidth icon={<LinkIcon />}>
+                        <Alert
+                          sx={{ background: "mojito" }}
+                          fullWidth
+                          icon={<LinkIcon />}
+                        >
                           <Typography variant="caption" color="textPrimary">
                             {getMockServiceUrl()}
                           </Typography>

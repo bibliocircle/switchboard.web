@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   Grid,
   Radio,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SCENARIO_TYPE_MAP } from "../config";
@@ -19,19 +20,19 @@ export default function ScenarioConfigCard({
   expandable,
   onActivateScenario,
 }) {
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(false);
   const onClickActivateScenario = (e) => {
-    setActive(true)
+    setActive(true);
     e.preventDefault();
     e.stopPropagation();
     setTimeout(() => {
       onActivateScenario();
-    })
+    });
   };
 
   useEffect(() => {
-    setActive(sc.isActive)
-  }, [sc])
+    setActive(sc.isActive);
+  }, [sc]);
   return (
     <Accordion disableGutters>
       <AccordionSummary
@@ -50,7 +51,18 @@ export default function ScenarioConfigCard({
           </Grid>
         </Grid>
       </AccordionSummary>
-      <AccordionDetails>{getScenarioDetails(sc.scenario)}</AccordionDetails>
+      <AccordionDetails>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            {getScenarioDetails(sc.scenario)}
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" color={theme => theme.palette.grey[400]}>
+              Scenario ID: {sc.scenario.id}
+            </Typography>
+          </Grid>
+        </Grid>
+      </AccordionDetails>
     </Accordion>
   );
 }

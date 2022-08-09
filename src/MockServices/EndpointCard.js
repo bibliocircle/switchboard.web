@@ -72,44 +72,9 @@ export default function EndpointCard({ endpoint }) {
         </Grid>
       </EndpointHeading>
       <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <ScenariosContainer container spacing={1}>
-              <Grid item xs={12}>
-                <Typography variant="subtitle2">Scenarios</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                {endpoint.scenarios.map((sc) => (
-                  <ScenarioItem sc={sc} expandable={sc.type !== "NETWORK"} />
-                ))}
-              </Grid>
-            </ScenariosContainer>
-          </Grid>
-          <Grid item xs={4}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle2">Rules</Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CodeSnippet>No rules configured</CodeSnippet>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle2">Response Delay</Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField size="small" value={endpoint.responseDelay} />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+        {endpoint.scenarios.map((sc) => (
+          <ScenarioItem sc={sc} expandable={sc.type !== "NETWORK"} />
+        ))}
       </CardContent>
     </Card>
   );
