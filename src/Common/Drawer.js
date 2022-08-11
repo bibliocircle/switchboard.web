@@ -60,7 +60,7 @@ export default function Drawer({ open, toggleDrawer }) {
       </Toolbar>
       <Divider />
       <List component="nav">
-        <ListItemButton component={Link} to="/mockservices">
+        <ListItemButton component={Link} to="/templates">
           <ListItemIcon>
             <MiscellaneousServicesIcon />
           </ListItemIcon>

@@ -4,19 +4,12 @@ import {
   Chip,
   Grid,
   styled,
-  TextField,
   Typography,
 } from "@mui/material";
 import { amber, blue, green, grey, purple, red } from "@mui/material/colors";
 import React from "react";
-import CodeSnippet from "../Common/CodeSnippet";
 import { DARK_THEME } from "../theme";
 import ScenarioItem from "./ScenarioItem";
-
-const ScenariosContainer = styled(Grid)(({ theme }) => ({
-  borderRight: `1px solid ${theme.palette.grey[200]}`,
-  paddingRight: theme.spacing(2),
-}));
 
 const CHIP_COLOUR_INTENSITY = 100;
 const chipColours = {

@@ -19,6 +19,7 @@ import PageHead from "./Common/PageHead";
 import Workspace from "./Workspaces/Workspace";
 import WorkspaceSetting from "./Workspaces/WorkspaceSetting";
 import CreateWorkspacePage from "./Workspaces/CreateWorkspacePage";
+import CreateServiceTemplatePage from "./MockServices/CreateMockServicePage";
 
 const ColorModeContext = React.createContext({ onToggleColourMode: () => {} });
 
@@ -70,9 +71,10 @@ function Application() {
                 />
               }
             >
-              <Route path="/" element={<Navigate to="/mockservices" replace/>} />
-              <Route path="/mockservices" element={<MockServices />} />
-              <Route path="/mockservice/:mockServiceId" element={<MockService />} />
+              <Route path="/" element={<Navigate to="/templates" replace/>} />
+              <Route path="/template/new" element={<CreateServiceTemplatePage />} />
+              <Route path="/templates" element={<MockServices />} />
+              <Route path="/template/:mockServiceId" element={<MockService />} />
               <Route path="/workspace/new" element={<CreateWorkspacePage />} />
               <Route path="/workspaces" element={<Workspaces />} />
               <Route path="/workspace/:workspaceId/mockservice/:mockServiceId" element={<WorkspaceSetting />} />

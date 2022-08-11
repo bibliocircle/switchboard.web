@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { Grid, Paper, styled, TextField } from "@mui/material";
+import { AddCircle as AddCircleIcon } from "@mui/icons-material";
+import { Button, Grid, Paper, styled, TextField } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import PageHead from "../Common/PageHead";
@@ -39,9 +40,31 @@ export default function MockServices() {
     <Grid container spacing={3}>
       <PageHead title="Mock Service Templates · Switchboard" />
       <Grid item xs={12}>
-        <Paper>
-          <TextField fullWidth placeholder="Search Mock Service Templates" autoFocus></TextField>
-        </Paper>
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item xs={10}>
+            <Paper>
+              <TextField
+                size="small"
+                fullWidth
+                placeholder="Search Mock Service Templates"
+                autoFocus
+              ></TextField>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={2}>
+            <Button
+              LinkComponent={Link}
+              to="/template/new"
+              fullWidth
+              variant="contained"
+              color="primary"
+              startIcon={<AddCircleIcon />}
+            >
+              Create Service Template
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={3}>
@@ -51,7 +74,7 @@ export default function MockServices() {
               item
               xs={4}
               component={Link}
-              to={`/mockservice/${ms.id}`}
+              to={`/template/${ms.id}`}
             >
               <MockServiceCard mockService={ms} />
             </ServiceCard>

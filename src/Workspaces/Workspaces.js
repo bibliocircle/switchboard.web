@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { AddCircle as AddCircleIcon } from "@mui/icons-material";
 import { Button, Grid, Paper, styled, TextField } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -55,6 +56,7 @@ export default function Workspaces() {
               fullWidth
               variant="contained"
               color="primary"
+              startIcon={<AddCircleIcon />}
             >
               Create Workspace
             </Button>

@@ -1,13 +1,13 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   Add as AddIcon,
+  AddCircle,
   ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Alert,
   Button,
   Chip,
   FormControl,
@@ -33,6 +33,9 @@ import Section from "../Common/Section";
 import { GET_WORKSPACES } from "../gql/queries/workspaces";
 import { ADD_MOCK_SERVICE_TO_WORKSPACE } from "../gql/mutations/workspace";
 import { getGqlErrorCode } from "../gql/errors";
+import EndpointEditor from "./EndpointEditor";
+import { CREATE_ENDPOINT } from "../gql/mutations/endpoint";
+import { useAlerts } from "../utils/hooks";
 
 export const MockServiceType = styled(Chip)(({ theme }) => ({
   fontWeight: "bold",
@@ -77,12 +80,16 @@ export function UpstreamCard({ upstream }) {
 
 export default function MockService() {
   const { mockServiceId } = useParams();
+  const [draftEndpoint, setDraftEndpoint] = useState({})
   const navigate = useNavigate();
+  const { successAlert, errorAlert } = useAlerts()
   const [selectedWsId, setSelectedWsId] = useState(null);
+  const [showEndpointEditor, setShowEndpointEditor] = useState(false);
   const [addMockServiceToWorkspace] = useMutation(
     ADD_MOCK_SERVICE_TO_WORKSPACE
   );
   const [mockServiceCreateError, setMockServiceCreateError] = useState(null);
+  const [createEndpoint] = useMutation(CREATE_ENDPOINT);
   const {
     loading: fetchingWs,
     error: fetchWsError,
@@ -134,6 +141,35 @@ export default function MockService() {
     }
   };
 
+  const onChangeDraftEndpoint = (value) => {
+    setDraftEndpoint(value)
+  }
+
+  const handleCreateEndpoint = async () => {
+    try {
+      await createEndpoint({
+        variables: {
+          endpoint: {
+            mockServiceId,
+            ...draftEndpoint
+          },
+        },
+        refetchQueries: [
+          {
+            query: GET_MOCK_SERVICE_BY_ID,
+            variables: {
+              id: mockServiceId,
+            },
+          },
+        ],
+      });
+      successAlert("Endpoint created!")
+      setDraftEndpoint({})
+    } catch (err) {
+      errorAlert(err.message);
+    }
+  };
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
@@ -156,6 +192,31 @@ export default function MockService() {
         <Grid container spacing={4}>
           <Grid item xs={8}>
             <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Button
+                      onClick={() => setShowEndpointEditor(true)}
+                      startIcon={<AddCircle />}
+                      size="small"
+                      variant="contained"
+                      color="inherit"
+                    >
+                      Add Endpoint
+                    </Button>
+                  </Grid>
+                  {showEndpointEditor && (
+                    <Grid item xs={12}>
+                      <EndpointEditor
+                        value={draftEndpoint}
+                        onChange={onChangeDraftEndpoint}
+                        onSubmit={handleCreateEndpoint}
+                        onClose={() => setShowEndpointEditor(false)}
+                      />
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={2}>
                   {ms.endpoints.map((ep) => (

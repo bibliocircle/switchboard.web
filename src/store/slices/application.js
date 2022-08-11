@@ -1,14 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 } from "uuid";
 
 const application = createSlice({
-  name: 'application',
-  initialState: {},
+  name: "application",
+  initialState: {
+    breadcrumbs: [],
+    alerts: [],
+  },
   reducers: {
-    setCurrentSection(state, { payload }) {
-      state.currentSection = payload
+    setBreadcrumbs(state, { payload }) {
+      state.breadcrumbs = payload;
     },
-  }
-})
-
-export const { setCurrentSection } = application.actions
-export default application.reducer
+    createAlert(state, { payload }) {
+      state.alerts = [
+        ...state.alerts,
+        {
+          id: v4(),
+          type: payload.type,
+          message: payload.message,
+          autoHideDuration: payload.autoHideDuration,
+        },
+      ];
+    },
+    removeAlert(state, { payload: alertId }) {
+      state.alerts = state.alerts.filter((alert) => alert.id !== alertId);
+    },
+  },
+});
+export const BREADCRUMBS_SELECTOR = (state) => state.application.breadcrumbs;
+export const ALERTS_SELECTOR = (state) => state.application.alerts;
+export const { setBreadcrumbs, createAlert, removeAlert } = application.actions;
+export default application.reducer;

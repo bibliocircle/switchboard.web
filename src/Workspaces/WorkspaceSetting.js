@@ -10,6 +10,7 @@ import {
   Alert,
   Grid,
   InputAdornment,
+  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,6 +29,29 @@ import { ACTIVATE_MOCK_SERVICE_SCENARIO } from "../gql/mutations/workspace_setti
 import { getGqlErrorCode, GQL_NOT_FOUND_ERROR } from "../gql/errors";
 import ErrorBanner from "../Common/ErrorBanner";
 import EndpointTab from "./EndpointTab";
+import { DARK_THEME } from "../theme";
+
+const Heading = styled(Grid)(({ theme }) => {
+  const backgroundColor =
+    theme.palette.mode === DARK_THEME
+      ? theme.palette.grey[900]
+      : theme.palette.background.paper;
+  return {
+    backgroundColor,
+    color: theme.palette.getContrastText(backgroundColor),
+    paddingTop: 0,
+    height: "100%",
+    borderRadius: theme.shape.borderRadius,
+  };
+});
+
+const WorkspaceName = styled(Grid)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === DARK_THEME
+      ? theme.palette.grey[700]
+      : theme.palette.grey[300],
+  padding: theme.spacing(1),
+}));
 
 export default function WorkspaceSetting() {
   const [activateMockServiceScenario] = useMutation(
@@ -118,9 +142,13 @@ export default function WorkspaceSetting() {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
-        <Section container alignContent="flex-start">
+        <Heading container alignContent="flex-start">
+          <WorkspaceName item xs={12}>
+            <Typography variant="subtitle2">{ws.workspace.name}</Typography>
+          </WorkspaceName>
           <Grid item xs={12}>
             <Grid
+              sx={{ pt: 2, pl: 2, pb: 2, pr: 2 }}
               container
               spacing={2}
               alignItems="center"
@@ -138,7 +166,7 @@ export default function WorkspaceSetting() {
               </Grid>
             </Grid>
           </Grid>
-        </Section>
+        </Heading>
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={2}>

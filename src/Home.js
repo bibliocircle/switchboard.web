@@ -4,13 +4,20 @@ import Toolbar from "@mui/material/Toolbar";
 import NavBar from "./Common/NavBar";
 import Drawer from "./Common/Drawer";
 import { Outlet } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Alert, Grid, Snackbar } from "@mui/material";
 import { LIGHT_THEME } from "./theme";
+import { useDispatch, useSelector } from "react-redux";
+import { ALERTS_SELECTOR, removeAlert } from "./store/slices/application";
 
 export default function Home({ onToggleColourMode, currentTheme }) {
+  const alerts = useSelector(ALERTS_SELECTOR);
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+  const dismissAlert = (alertId) => {
+    dispatch(removeAlert(alertId));
   };
 
   return (
@@ -35,11 +42,23 @@ export default function Home({ onToggleColourMode, currentTheme }) {
         }}
       >
         <Toolbar />
-        <Grid container justifyContent="center" sx={{mt: 4, mb: 4 }}>
+        <Grid container justifyContent="center" sx={{ mt: 4, mb: 4 }}>
           <Grid item xs={12} lg={11}>
-          {<Outlet />}
+            {<Outlet />}
           </Grid>
         </Grid>
+        {alerts.map((alert) => (
+          <Snackbar
+            key={alert.id}
+            open
+            onClose={() => dismissAlert(alert.id)}
+            autoHideDuration={alert.autoHideDuration}
+          >
+            <Alert severity={alert.type} sx={{ width: "100%" }}>
+              {alert.message}
+            </Alert>
+          </Snackbar>
+        ))}
       </Box>
     </Box>
   );
